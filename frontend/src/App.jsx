@@ -1,17 +1,22 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import hljs from "highlight.js";
-import "highlight.js/styles/github-dark.css";
+// import hljs from "highlight.js";
+// import "highlight.js/styles/github-dark.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/HomePage";
 import ProblemPage from "./pages/ProblemPage";
 
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-
-import {EditorView, basicSetup} from "codemirror";
-import {javascript} from "codemirror"
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { python } from '@codemirror/lang-python';
+import { cpp } from '@codemirror/lang-cpp';
+// import 'codemirror/theme/tokyo-night.css';
+import {tokyoNight, tokyoNightInit, tokyoNightStyle} from "@uiw/codemirror-theme-tokyo-night";
+// import {EditorView, basicSetup} from "codemirror";
+// import {javascript} from "codemirror"
 
 const CodeBlock = ({ language, value }) => {
     useEffect(() => {
@@ -27,83 +32,37 @@ const CodeBlock = ({ language, value }) => {
 
 function App() {
     return (
-        // <Router>
-        //     <nav>
-        //         <Link to="/">Home</Link>
-        //         <Link to="/problem">Problem</Link>
-        //     </nav>
-        //     <Routes>
-        //         <Route path="/" element={<Home />} />
-        //         <Route path="/problem" element={<ProblemPage />} />
-        //     </Routes>
-        // </Router>
-
-// import * as React from 'react';
-      // <MultilineTextFields/>
-      // <CodeEditor/>
-      <div></div>
-
-    );
+        <Router>
+            <nav>
+                <Link to="/">Home</Link>
+                <Link to="/1">Problem</Link>
+            </nav>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/:id" element={<ProblemPage />} />
+            </Routes>
+        </Router>
+    )
 }
-function MultilineTextFields() {
-  useEffect(() => {
-    hljs.highlightAll(); // Initialize highlighting
-}, []);
-  return (
-
-      <div>
-        <pre>
-
-        <code className="javascript">
-
-        <TextField
-          id="outlined-multiline-static"
-          // label="Multiline"
-          multiline
-          rows={4}
-          defaultValue="Default Value"
-          />
-          </code>
-          </pre>
-      </div>
-  );
-}
-
-const CodeEditor = () => {
-  const editorRef = useRef(null);
-
-  useEffect(() => {
-    // Initialize CodeMirror editor
-    const editorInstance = CodeMirror(editorRef.current, {
-      value: 'console.log("Hello, world!");',
-      mode: 'javascript',
-      theme: 'material', // Optional: specify a theme
-      lineNumbers: true,
-    });
-
-    return () => {
-      editorInstance.toTextArea(); // Cleanup CodeMirror on component unmount
-    };
-  }, []);
-
-  return <div ref={editorRef} style={{ height: '300px' }} />;
-};
-
-// export default CodeEditor;
-
 // function App() {
-//     const code = `
-//     function helloWorld() {
-//       console.log("Hello, world!");
-//     }
-//   `;
-
+//     const [value, setValue] = useState("console.log('hello world!');");
+//     const onChange = useCallback((val, viewUpdate) => {
+//         console.log("val:", val);
+//         setValue(val);
+//     }, []);
 //     return (
-//         <div>
-//             {/* <h1>Code Highlight Example</h1> */}
-//             <CodeBlock language="javascript" value={code} />
-//         </div>
+//         <CodeMirror
+//             value={value}
+//             height="200px"
+//             // extensions={[javascript({ jsx: true })]}
+//             extensions={[python()]}
+//             theme={tokyoNight}
+//             onChange={onChange}
+//         />
 //     );
 // }
 
+
+
 export default App;
+

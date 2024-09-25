@@ -10,9 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/lang-cpp": "^6.0.2",
+    "@codemirror/lang-java": "^6.0.1",
+    "@codemirror/lang-javascript": "^6.2.2",
+    "@codemirror/lang-python": "^6.1.6",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.1",
+    "@uiw/codemirror-theme-github": "^4.23.3",
+    "@uiw/codemirror-theme-tokyo-night": "^4.23.3",
+    "@uiw/react-codemirror": "^4.23.3",
     "codemirror": "^6.0.1",
     "frontend": "file:",
     "highlight.js": "^11.10.0",
