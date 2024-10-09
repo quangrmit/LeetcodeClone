@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\Repository\\Repository.csproj": {}
+    "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\Repository\\Repository.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\Repository\\Repository.csproj": {
+    "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\Repository\\Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\Repository\\Repository.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\Repository\\Repository.csproj",
         "projectName": "Repository",
-        "projectPath": "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\Repository\\Repository.csproj",
+        "projectPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\Repository\\Repository.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\Repository\\obj\\",
+        "outputPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\Repository\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\DataAccess\\DataAccess.csproj": {}
+    "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\DataAccess\\DataAccess.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\DataAccess\\DataAccess.csproj": {
+    "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\DataAccess\\DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\DataAccess\\DataAccess.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\DataAccess\\DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\DataAccess\\DataAccess.csproj",
+        "projectPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\DataAccess\\DataAccess.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\DataAccess\\obj\\",
+        "outputPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",

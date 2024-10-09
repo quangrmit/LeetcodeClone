@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\ProjectWebApi\\ProjectWebApi.csproj": {}
+    "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\ProjectWebApi\\ProjectWebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\ProjectWebApi\\ProjectWebApi.csproj": {
+    "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\ProjectWebApi\\ProjectWebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\ProjectWebApi\\ProjectWebApi.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\ProjectWebApi\\ProjectWebApi.csproj",
         "projectName": "ProjectWebApi",
-        "projectPath": "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\ProjectWebApi\\ProjectWebApi.csproj",
+        "projectPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\ProjectWebApi\\ProjectWebApi.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\OneDrive\\desktop\\LeetcodeClone\\backend\\ProjectWebApi\\obj\\",
+        "outputPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\ProjectWebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
