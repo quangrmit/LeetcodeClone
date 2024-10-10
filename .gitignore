@@ -2,3 +2,10 @@
 .github
 backend/.vs
 backend/BusinessObjects/appsettings.json
+test
+
+# Build file
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease.

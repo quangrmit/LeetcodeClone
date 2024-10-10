@@ -6,17 +6,17 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/HomePage";
 import ProblemPage from "./pages/ProblemPage";
+import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import CodeMirror from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
-import { python } from '@codemirror/lang-python';
-import { cpp } from '@codemirror/lang-cpp';
 // import 'codemirror/theme/tokyo-night.css';
-import { tokyoNight, tokyoNightInit, tokyoNightStyle } from "@uiw/codemirror-theme-tokyo-night";
-// import {EditorView, basicSetup} from "codemirror";
-// import {javascript} from "codemirror"
+// import { tokyoNight, tokyoNightInit, tokyoNightStyle } from "@uiw/codemirror-theme-tokyo-night";
+// // import ReactMardown from "react-markdown";
+// // import  from "react-markdown";
+// import Markdown from "react-markdown";
+// import { Divider } from "@mui/material";
+
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const CodeBlock = ({ language, value }) => {
     useEffect(() => {
@@ -31,10 +31,31 @@ const CodeBlock = ({ language, value }) => {
 };
 
 function App() {
+    const darkTheme = createTheme({
+        palette: {
+            mode: "dark",
+        },
+    });
     return (
-        <Home />
-    )
+        <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <div className="poppins-regular">
+                {/* <Router>
+                    <nav>
+                        <Link to="/">Home</Link>
+                        <Link to="/1">Problem</Link>
+                    </nav>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/:id" element={<ProblemPage />} />
+                    </Routes>
+                </Router> */}
+                <Home />
+            </div>
+        </ThemeProvider>
+    );
 }
+
 // function App() {
 //     const [value, setValue] = useState("console.log('hello world!');");
 //     const onChange = useCallback((val, viewUpdate) => {
@@ -53,7 +74,4 @@ function App() {
 //     );
 // }
 
-
-
 export default App;
-
