@@ -12,11 +12,15 @@ namespace BusinessObjects
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TestcaseId { get; set; }
-        public string Input { get; set; }
-        public string Output { get; set; }
+        //public string Input { get; set; }
+        //public string Output { get; set; }
 
-        [Required]
-        public Question question { get; set; }
+        public string funcName { get; set; }
+        public string cases { get; set; }
+
+        public Question question { get; set; } = null;
+
+        public int QuestionId { get; set; }
 
     }
 }
