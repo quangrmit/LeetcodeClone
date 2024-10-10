@@ -14,7 +14,7 @@ import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python';
 import { cpp } from '@codemirror/lang-cpp';
 // import 'codemirror/theme/tokyo-night.css';
-import {tokyoNight, tokyoNightInit, tokyoNightStyle} from "@uiw/codemirror-theme-tokyo-night";
+import { tokyoNight, tokyoNightInit, tokyoNightStyle } from "@uiw/codemirror-theme-tokyo-night";
 // import {EditorView, basicSetup} from "codemirror";
 // import {javascript} from "codemirror"
 
@@ -32,16 +32,7 @@ const CodeBlock = ({ language, value }) => {
 
 function App() {
     return (
-        <Router>
-            <nav>
-                <Link to="/">Home</Link>
-                <Link to="/1">Problem</Link>
-            </nav>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/:id" element={<ProblemPage />} />
-            </Routes>
-        </Router>
+        <Home />
     )
 }
 // function App() {
