@@ -23,10 +23,6 @@ namespace Repository
             return QuestionDAO.getQuestionById(id);
         }
 
-        public List<bool> answerQuestion(AnswerQuestionRequestDTO answer)
-        {
-            //String testcases = TestcaseDAO.getTestcasesById(answer.QuestionId);
-            return [];
-        }
+        
     }
 }

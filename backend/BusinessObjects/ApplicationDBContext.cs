@@ -70,8 +70,8 @@ namespace BusinessObjects
             );
 
             modelBuilder.Entity<Testcase>().HasData(
-                new Testcase { TestcaseId = 1, QuestionId = 1, funcName = "isValid", cases = "'{\"data\":[{\"input\":[\"()\"],\"output\":[true]},{\"input\":[\"()[]{}\"],\"output\":[true]},{\"input\":[\"(]\"],\"output\":[false]}]}'" },
-                new Testcase { TestcaseId = 2, QuestionId = 2, funcName = "twoSum", cases = "{\"data\":[{\"input\":[[2,7,11,15],9],\"output\":[[0,1]]},{\"input\":[[3,2,4],6],\"output\":[[0,1]]},{\"input\":[[3,3],6],\"output\":[[0,1]]}]}'" }
+                new Testcase { TestcaseId = 1, QuestionId = 1, funcName = "isValid", cases = "{\"data\":[{\"input\":[\"()\"],\"output\":[true]},{\"input\":[\"()[]{}\"],\"output\":[true]},{\"input\":[\"(]\"],\"output\":[false]}]}" },
+                new Testcase { TestcaseId = 2, QuestionId = 2, funcName = "twoSum",  cases = "{\"data\":[{\"input\":[[2,7,11,15],9],\"output\":[[0,1]]},{\"input\":[[3,2,4],6],\"output\":[[0,1]]},{\"input\":[[3,3],6],\"output\":[[0,1]]}]}" }
              );
         }
     }

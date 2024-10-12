@@ -33,15 +33,15 @@ namespace ProjectWebApi.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult answerQuestion(AnswerQuestionRequestDTO answer)
-        {
-            if (ModelState.IsValid)
-            {
-                List<bool> testResult = questionRepository.answerQuestion(answer);
-                return Ok(testResult);
-            }
-            return BadRequest(new { message = "Invalid answer format" });
-        }
+        //[HttpPost]
+        //public IActionResult answerQuestion(AnswerQuestionRequestDTO answer)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        List<bool> testResult = questionRepository.answerQuestion(answer);
+        //        return Ok(testResult);
+        //    }
+        //    return BadRequest(new { message = "Invalid answer format" });
+        //}
     }
 }
