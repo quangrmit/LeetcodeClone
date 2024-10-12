@@ -4,11 +4,12 @@ import { cpp } from "@codemirror/lang-cpp";
 import { tokyoNight, tokyoNightInit, tokyoNightStyle } from "@uiw/codemirror-theme-tokyo-night";
 import { java } from "@codemirror/lang-java";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useContext } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { Select, MenuItem, FormControl, InputLabel, FormHelperText, Divider } from "@mui/material";
+import { CodeTemplateContext } from "../pages/ProblemPage";
 
-function EditorPanel({ language , width}) {
+function EditorPanel({ language, width }) {
     //Load data from localstorage
     const [lang, setLang] = useState("");
 
@@ -20,13 +21,12 @@ function EditorPanel({ language , width}) {
 
     useEffect(() => {
         console.log(height);
-    }, [height])
-
+    }, [height]);
 
     const editorResizerRef = useRef(null);
 
     const handleMouseDown = (e) => {
-        console.log("here")
+        console.log("here");
         const resizable = editorResizerRef.current;
         const startY = e.clientY;
         const startHeight = resizable.offsetHeight;
@@ -34,16 +34,16 @@ function EditorPanel({ language , width}) {
         // Mousemove handler to resize the div
         // console.log(resizable.style.width);
         const handleMouseMove = (moveEvent) => {
-            const newHeight = startHeight + (moveEvent.clientY- startY);
-            console.log(`new height ${newHeight}`)
+            const newHeight = startHeight + (moveEvent.clientY - startY);
+            console.log(`new height ${newHeight}`);
             resizable.style.height = `${newHeight}px`; // Dynamically set new width
-            setHeight(newHeight)
+            setHeight(newHeight);
         };
 
         // Remove event listeners after mouse is released
         const handleMouseUp = () => {
             document.removeEventListener("mousemove", handleMouseMove);
-            document.removeEventListener("mouseup", handleMouseUp);
+            document.removeEvKentListener("mouseup", handleMouseUp);
         };
 
         // Attach the event listeners for resizing
@@ -53,7 +53,7 @@ function EditorPanel({ language , width}) {
 
     // let age = 5;
     return (
-        <div className="editor" >
+        <div className="editor">
             {/* Create a panel for choosing the language */}
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <Select
@@ -69,11 +69,14 @@ function EditorPanel({ language , width}) {
                 </Select>
             </FormControl>
             <div ref={editorResizerRef}>
-
-            <Editor language={lang} height={height} width = {width}/>
+                <Editor language={lang} height={height} width={width} />
             </div>
-            <div  className="editor-resizer" onMouseDown={handleMouseDown}>
-                <Divider orientation="horizontal" style={{ borderColor: "white" }} sx={{borderBottomWidth:3}}/>
+            <div className="editor-resizer" onMouseDown={handleMouseDown}>
+                <Divider
+                    orientation="horizontal"
+                    style={{ borderColor: "white" }}
+                    sx={{ borderBottomWidth: 3 }}
+                />
             </div>
 
             {/* EditorPanel */}
@@ -81,14 +84,23 @@ function EditorPanel({ language , width}) {
     );
 }
 
-function Editor({ language , height, width}) {
+function Editor({ language, height, width }) {
     // const [value, setValue] = useState(`print("hello")`);
 
-    useEffect(() => {
-        console.log(height)
-        // console.log(`This is ref `)
-    }, [height])
+    const langContext = useContext(CodeTemplateContext);
+    const [langObj, setLangObj] = useState({ ...langContext });
+    console.log("this is langobj");
+    console.log(langObj);
 
+    useEffect(() => {
+        console.log(height);
+        // console.log(`This is ref `)
+    }, [height]);
+
+    useEffect(() => {
+        console.log("this is lang context after changing");
+        console.log(langContext);
+    }, [langContext]);
 
     let editorRef = useRef(null);
     let value;
@@ -96,24 +108,40 @@ function Editor({ language , height, width}) {
     let detectLanguage = (language) => {
         if (language == "") {
             lang = python();
-            value = `print("hello")`;
+            value = langContext.codeTemplates.python;
         } else if (language == "cpp") {
             lang = cpp();
-            value = `int main() {}`;
+            value = langContext.codeTemplates.cpp;
             // set the value to cpp code
         } else if (language == "java") {
             lang = java();
-            value = `System`;
+            value = langContext.codeTemplates.java;
             // set the value to java code
         }
     };
 
     detectLanguage(language);
 
+    useEffect(() => {
+        console.log('langojb changing...')
+        console.log(langObj)
+    }, [langObj])
+
     // Get the initial code based on the language
     const onChange = useCallback((val, viewUpdate) => {
         console.log("val:", val);
-        // setValue(val);
+        // Set the langObj to new value
+        console.log(viewUpdate);
+
+        let newObj;
+        if (lang == "") {
+            newObj = { ...langObj, python: val };
+        } else if (lang == "java") {
+            newObj = { ...langObj, java: val };
+        } else if (lang == "cpp") {
+            newObj = { ...langObj, cpp: val };
+        }
+        setLangObj(newObj);
     }, []);
 
     return (
@@ -123,13 +151,8 @@ function Editor({ language , height, width}) {
             height={`${height}px`}
             maxHeight={`${height}px`}
             width={`${width}px`}
-            // width={`${width}`}
-
-            
-            // extensions={[javascript({ jsx: true })]}
             extensions={[lang]}
             theme={tokyoNight}
-            
             onChange={onChange}
         />
     );

@@ -18,17 +18,6 @@ import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-const CodeBlock = ({ language, value }) => {
-    useEffect(() => {
-        hljs.highlightAll(); // Initialize highlighting
-    }, []);
-
-    return (
-        <pre>
-            <code className={language}>{value}</code>
-        </pre>
-    );
-};
 
 function App() {
     const darkTheme = createTheme({
@@ -39,19 +28,19 @@ function App() {
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
-            <div className="poppins-regular">
-                {/* <Router>
+                <div className="poppins-regular">
+                    {/* <Router>
                     <nav>
-                        <Link to="/">Home</Link>
-                        <Link to="/1">Problem</Link>
+                    <Link to="/">Home</Link>
+                    <Link to="/1">Problem</Link>
                     </nav>
                     <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/:id" element={<ProblemPage />} />
+                    <Route path="/" element={<Home />} />
+                    <Route path="/:id" element={<ProblemPage />} />
                     </Routes>
-                </Router> */}
-                <Home />
-            </div>
+                    </Router> */}
+                    <Home />
+                </div>
         </ThemeProvider>
     );
 }

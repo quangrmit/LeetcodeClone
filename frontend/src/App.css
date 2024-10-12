@@ -11,6 +11,10 @@
   /* border: 3px solid orange; */
 }
 
+.problem-item > a{
+  color: white;
+}
+
 /* .problem-page-content:last-child{
   flex-grow: 10;
 } */

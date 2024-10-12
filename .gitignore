@@ -2,6 +2,7 @@
 .github
 backend/.vs
 backend/BusinessObjects/appsettings.json
+backend/ProjectWebApi/appsettings.json
 test
 
 # Build file

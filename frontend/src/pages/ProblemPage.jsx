@@ -7,10 +7,12 @@ import EditorPanel from "../components/EditorPanel";
 import { Divider } from "@mui/material";
 import RightPanel from "../components/RightPanel";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function Problem() {
+export const CodeTemplateContext = React.createContext();
+
+function Problem({ questionId }) {
     const { id } = useParams();
     console.log(id);
     const [question, setQuestion] = useState({});
@@ -23,8 +25,24 @@ function Problem() {
             console.log(data);
         };
         fetchData();
-    }, [id])
+    }, [id]);
 
+
+
+    const [lang, setLang] = useState(null);
+
+
+    // There is some latency to this
+    let codeTemplates = {
+        python: question.pythonAnswerTemplate,
+        java: question.javaAnswerTemplate,
+        cpp: question.cppAnswerTemplate,
+    };
+
+    useEffect(() => {
+        console.log(question.content);
+        console.log(codeTemplates);
+    }, [question]);
 
     // Fetch data using useEffect()
     //
@@ -43,8 +61,10 @@ This is **Markdown** content.
             <div className="problem-page-content">
                 <TopPanel />
                 <div className="down-panels">
-                    <DescriptionPanel markdown={markdown} />
-                    <RightPanel />
+                    <DescriptionPanel markdown={question.content} />
+                    <CodeTemplateContext.Provider value={{codeTemplates, setLang }}>
+                        <RightPanel />
+                    </CodeTemplateContext.Provider>
                 </div>
                 {/* <div className="test">hiw</div> */}
             </div>
