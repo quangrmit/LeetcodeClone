@@ -27,6 +27,8 @@ function Problem({ questionId }) {
         data: [],
     });
     useEffect(() => {
+
+        // check if the current id is the same as the id in the localStorage
         
         console.log("is this reloading?");
         console.log(JSON.parse(localStorage.getItem("question")))
@@ -37,15 +39,12 @@ function Problem({ questionId }) {
             setQuestion({ ...data, active: "" });
             console.log(data);
         };
-        if (compareObj(question, {})) {
+        if (compareObj(question, {}) || question.questionId != id) {
             fetchData();
         } else {
             console.log("otherwise");
         }
     }, [id]);
-
-    // Fetch data using useEffect()
-    //
 
     let markdown = `
 # Hello World
