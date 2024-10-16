@@ -1,6 +1,7 @@
 from solution import Solution
 import json
 import inspect
+from typing import List
 
 def main():
 	data = {}

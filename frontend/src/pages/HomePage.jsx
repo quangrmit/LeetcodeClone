@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import ProblemPage from "./ProblemPage";
 import ProblemItem from "../components/ProblemItem";
 import ProblemList from "../components/ProblemList";
+
+export const QuestionProvider = React.createContext(null);
 
 function Home() {
     const [questions, setQuestions] = useState([]);
@@ -12,24 +14,19 @@ function Home() {
             let res = await fetch(url);
             res = await res.json();
             setQuestions([...res]);
-            console.log(res);
+        console.log(res);
         };
-        fetchData();
+        fetchData(); 
     }, []);
 
     return (
         <>
             <div>Problem Set</div>
-            <Router>
-                <nav>
-                    <Link to="/">Home</Link>
-                </nav>
-                <ProblemList questions={questions} />
-                <Routes>
-                    <Route path="/:id" element={<ProblemPage/>} />
-                    {/* <Route path="/" element={<Home/>}/> */}
-                </Routes>
-            </Router>
+
+                <QuestionProvider.Provider value={{questions, setQuestions}}>
+                    <ProblemList />
+                </QuestionProvider.Provider>
+
         </>
     );
 }

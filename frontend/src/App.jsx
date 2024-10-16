@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import viteLogo from "/vite.svg";
 import "./App.css";
 // import hljs from "highlight.js";
@@ -18,7 +18,6 @@ import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-
 function App() {
     const darkTheme = createTheme({
         palette: {
@@ -28,19 +27,17 @@ function App() {
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
-                <div className="poppins-regular">
-                    {/* <Router>
-                    <nav>
+            <div className="poppins-regular">
+                <Router>
+                <nav>
                     <Link to="/">Home</Link>
-                    <Link to="/1">Problem</Link>
-                    </nav>
+                </nav>
                     <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/:id" element={<ProblemPage />} />
+                        <Route path="/" element={<Home />} />
+                        <Route path="/:id" element={<ProblemPage />} />
                     </Routes>
-                    </Router> */}
-                    <Home />
-                </div>
+                </Router>
+            </div>
         </ThemeProvider>
     );
 }

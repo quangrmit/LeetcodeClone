@@ -7,14 +7,34 @@ import { java } from "@codemirror/lang-java";
 import { useState, useCallback, useEffect, useRef, useContext } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { Select, MenuItem, FormControl, InputLabel, FormHelperText, Divider } from "@mui/material";
-import { CodeTemplateContext } from "../pages/ProblemPage";
+import { QuestionContext } from "../pages/ProblemPage";
 
 function EditorPanel({ language, width }) {
+
+
+    const {question, setQuestion} = useContext(QuestionContext);
+
+
+    useEffect(() => {
+        // Store the new question in local storage each time it changes
+
+        localStorage.setItem("question", JSON.stringify(question));
+        console.log('changing')
+        console.log(question);
+
+
+        console.log("this is local storange after changing")
+        console.log(JSON.parse(localStorage.getItem("question")))
+
+    }, [question])
+
+
     //Load data from localstorage
-    const [lang, setLang] = useState("");
 
     const handleChange = (event) => {
-        setLang(event.target.value);
+        setQuestion((prev) => {
+            return {...prev, active: event.target.value}
+        })
     };
 
     const [height, setHeight] = useState(200);
@@ -50,14 +70,13 @@ function EditorPanel({ language, width }) {
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
     };
-
     // let age = 5;
     return (
         <div className="editor">
             {/* Create a panel for choosing the language */}
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <Select
-                    value={lang}
+                    value={question.active ? question.active : ""}
                     onChange={handleChange}
                     displayEmpty
                     inputProps={{ "aria-label": "Without label" }}
@@ -69,7 +88,7 @@ function EditorPanel({ language, width }) {
                 </Select>
             </FormControl>
             <div ref={editorResizerRef}>
-                <Editor language={lang} height={height} width={width} />
+                <Editor question={question} setQuestion = {setQuestion} height={height} width={width} />
             </div>
             <div className="editor-resizer" onMouseDown={handleMouseDown}>
                 <Divider
@@ -84,23 +103,16 @@ function EditorPanel({ language, width }) {
     );
 }
 
-function Editor({ language, height, width }) {
-    // const [value, setValue] = useState(`print("hello")`);
+function Editor({ question,setQuestion, height, width }) {
 
-    const langContext = useContext(CodeTemplateContext);
-    const [langObj, setLangObj] = useState({ ...langContext });
-    console.log("this is langobj");
-    console.log(langObj);
 
     useEffect(() => {
         console.log(height);
         // console.log(`This is ref `)
     }, [height]);
 
-    useEffect(() => {
-        console.log("this is lang context after changing");
-        console.log(langContext);
-    }, [langContext]);
+
+
 
     let editorRef = useRef(null);
     let value;
@@ -108,53 +120,82 @@ function Editor({ language, height, width }) {
     let detectLanguage = (language) => {
         if (language == "") {
             lang = python();
-            value = langContext.codeTemplates.python;
+            value = question.pythonAnswerTemplate;
+
         } else if (language == "cpp") {
             lang = cpp();
-            value = langContext.codeTemplates.cpp;
-            // set the value to cpp code
+            value = question.cppAnswerTemplate
+
         } else if (language == "java") {
             lang = java();
-            value = langContext.codeTemplates.java;
-            // set the value to java code
+            value = question.javaAnswerTemplate;
         }
+        
     };
-
-    detectLanguage(language);
-
-    useEffect(() => {
-        console.log('langojb changing...')
-        console.log(langObj)
-    }, [langObj])
+    // useEffect(() => {
+        detectLanguage(question.active);
+    // }, [])
 
     // Get the initial code based on the language
     const onChange = useCallback((val, viewUpdate) => {
-        console.log("val:", val);
-        // Set the langObj to new value
-        console.log(viewUpdate);
+        console.log("val:")
+        console.log( val);
 
-        let newObj;
-        if (lang == "") {
-            newObj = { ...langObj, python: val };
-        } else if (lang == "java") {
-            newObj = { ...langObj, java: val };
-        } else if (lang == "cpp") {
-            newObj = { ...langObj, cpp: val };
-        }
-        setLangObj(newObj);
-    }, []);
+
+        console.log('question in onchange')
+        console.log(question)
+
+        if (question.active == "java"){
+            console.log("setting new for java")
+            setQuestion((prev) => {
+                console.log("this is prev")
+                console.log(prev);
+
+                let newObj  = {...prev, javaAnswerTemplate: val}
+                console.log('this is new obj')
+                console.log(newObj)
+                return newObj;
+            })
+        }else if (question.ative == "cpp"){
+            console.log('setting new for cpp')
+            setQuestion((prev) => {
+                let newObj  = {...prev, cppAnswerTemplate: val}
+                console.log('this is new obj')
+                console.log(newObj)
+                return newObj;
+            })
+        }else {
+            console.log('setting new for py')
+
+            setQuestion((prev) => {
+                let newObj  = {...prev, pythonAnswerTemplate: val}
+                console.log('this is new obj')
+                console.log(newObj)
+                return newObj;
+            })}
+    }, [question]);
+
+
+    const onChange2 = (e) => {
+        console.log("onchange2")
+        console.log(e.target);
+    }
 
     return (
-        <CodeMirror
-            ref={editorRef}
-            value={value}
-            height={`${height}px`}
-            maxHeight={`${height}px`}
-            width={`${width}px`}
-            extensions={[lang]}
-            theme={tokyoNight}
-            onChange={onChange}
-        />
+        <div>
+            <CodeMirror
+                ref={editorRef}
+                value={value}
+                height={`${height}px`}
+                maxHeight={`${height}px`}
+                width={`${width}px`}
+                extensions={[lang]}
+                theme={tokyoNight}
+                onChange={onChange}
+                // onChange={onChange2}
+                style={{fontFamily: "Times New Roman"}}
+            />
+        </div>
     );
 }
 

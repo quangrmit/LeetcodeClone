@@ -9,40 +9,40 @@ import RightPanel from "../components/RightPanel";
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import compareObj from "../utils/compareObj"
 
-export const CodeTemplateContext = React.createContext();
+export const QuestionContext = React.createContext();
+export const ResultContext = React.createContext();
+
+
 
 function Problem({ questionId }) {
     const { id } = useParams();
     console.log(id);
-    const [question, setQuestion] = useState({});
+
+
+    const [question, setQuestion] = useState(JSON.parse(localStorage.getItem("question")) || {})
+
+    const [result, setResult] = useState({
+        data: [],
+    });
     useEffect(() => {
+        
+        console.log("is this reloading?");
+        console.log(JSON.parse(localStorage.getItem("question")))
         const fetchData = async () => {
             let url = `http://localhost:5014/api/Question/${id}`;
             let res = await fetch(url);
             let data = await res.json();
-            setQuestion({ ...data });
+            setQuestion({ ...data, active: "" });
             console.log(data);
         };
-        fetchData();
+        if (compareObj(question, {})) {
+            fetchData();
+        } else {
+            console.log("otherwise");
+        }
     }, [id]);
-
-
-
-    const [lang, setLang] = useState(null);
-
-
-    // There is some latency to this
-    let codeTemplates = {
-        python: question.pythonAnswerTemplate,
-        java: question.javaAnswerTemplate,
-        cpp: question.cppAnswerTemplate,
-    };
-
-    useEffect(() => {
-        console.log(question.content);
-        console.log(codeTemplates);
-    }, [question]);
 
     // Fetch data using useEffect()
     //
@@ -59,14 +59,16 @@ This is **Markdown** content.
     return (
         <div>
             <div className="problem-page-content">
-                <TopPanel />
-                <div className="down-panels">
-                    <DescriptionPanel markdown={question.content} />
-                    <CodeTemplateContext.Provider value={{codeTemplates, setLang }}>
-                        <RightPanel />
-                    </CodeTemplateContext.Provider>
-                </div>
-                {/* <div className="test">hiw</div> */}
+                <QuestionContext.Provider value={{ question, setQuestion }}>
+                    <ResultContext.Provider value={{ result, setResult }}>
+                        <TopPanel />
+                        <div className="down-panels">
+                            <DescriptionPanel markdown={question.content} />
+                            <RightPanel />
+                        </div>
+                        {/* <div className="test">hiw</div> */}
+                    </ResultContext.Provider>
+                </QuestionContext.Provider>
             </div>
         </div>
     );

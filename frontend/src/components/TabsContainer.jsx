@@ -14,7 +14,7 @@ const TabsContainer = ({ names = NAMES, contents = CONTENTS }) => {
         <div>
             {names.map((name, index) => {
                 return (
-                    <span className="case-chip" key={index}  >{name}</span>
+                    <span className="case-chip" key={index} onClick={() => handleSwitchTab(index)} >{name}</span>
                 );
             })}
 
