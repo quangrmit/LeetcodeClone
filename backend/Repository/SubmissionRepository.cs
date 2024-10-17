@@ -46,24 +46,33 @@ namespace Repository
 
             // Return result
             String resultFilePath = "..\\RunEnv\\mount\\res.json";
-            while (true)
+
+            using (StreamReader r = new StreamReader(resultFilePath))
             {
-                try
-                {
-                    using (StreamReader r = new StreamReader(resultFilePath))
-                    {
-                        res = r.ReadToEnd();
-                       
-                    }
-                    File.Delete(resultFilePath);
-                    return res;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Waiting...");
-                    continue;
-                }
+                res = r.ReadToEnd();
+
             }
+            File.Delete(resultFilePath);
+            return res;
+            // while (true)
+            // {
+            //     try
+            //     {
+            //         Console.WriteLine("Entered while loop");
+            //         using (StreamReader r = new StreamReader(resultFilePath))
+            //         {
+            //             res = r.ReadToEnd();
+
+            //         }
+            //         File.Delete(resultFilePath);
+            //         return res;
+            //     }
+            //     catch (Exception e)
+            //     {
+            //         Console.WriteLine("Waiting...");
+            //         continue;
+            //     }
+            // }
         }
 
         private static Stream CreateTarballForDockerfileDirectory(string directory)
@@ -109,7 +118,7 @@ namespace Repository
             return tarball;
         }
 
-        private static async Task<bool> createImage( DockerClient client ,string imagePath, string imageName) 
+        private static async Task<bool> createImage(DockerClient client, string imagePath, string imageName)
         {
             var tarball = CreateTarballForDockerfileDirectory(imagePath);
 
@@ -136,7 +145,8 @@ namespace Repository
             });
 
             // Run container
-            await client.Containers.StartContainerAsync(container.ID, new Docker.DotNet.Models.ContainerStartParameters(){});
+            await client.Containers.StartContainerAsync(container.ID, new Docker.DotNet.Models.ContainerStartParameters() { });
+            await client.Containers.WaitContainerAsync(container.ID, CancellationToken.None);
             return true;
 
         }
