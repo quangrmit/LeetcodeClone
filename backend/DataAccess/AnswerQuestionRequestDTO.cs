@@ -10,5 +10,6 @@ namespace DataAccess
     {
         public int QuestionId { get; set; }
         public String Answer {  get; set; }
+        public String Language { get; set; }
     }
 }

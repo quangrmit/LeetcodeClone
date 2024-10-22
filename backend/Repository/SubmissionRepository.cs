@@ -19,26 +19,43 @@ namespace Repository
     {
         public SubmissionRepository() { }
 
-        public async Task<String> answerQuestion(Testcase testcase, String answer)
+        public async Task<String> answerQuestion(Testcase testcase, String answer, String lan)
         {
+            // Init testcases
             String res = "hello";
             JObject json = JObject.Parse(testcase.cases);
             json.Add("problem", testcase.funcName);
             Console.WriteLine(json);
             String dataFilePath = "..\\RunEnv\\mount\\data.json";
-            //String data = JsonSerializer.Serialize(json);
-            //Console.WriteLine(data);
             File.WriteAllText(dataFilePath, json.ToString());
 
-            String solutionFilePath = "..\\RunEnv\\pythonTest\\solution.py";
-            File.WriteAllText(solutionFilePath, answer);
+            // Init solution
+            if (lan == "python")
+            {
+                String solutionFilePath = "..\\RunEnv\\pythonTest\\solution.py";
+                File.WriteAllText(solutionFilePath, answer);
+            }
+            else if(lan == "java")
+            {
+                String solutionFilePath = "..\\RunEnv\\javaTest\\src\\main\\java\\com\\example\\app\\Solution.java";
+                answer = "package com.example.app;\r\n" + answer;
+                File.WriteAllText(solutionFilePath, answer);
+            }
 
             // Setup Docker client
             DockerClient client = new DockerClientConfiguration().CreateClient();
 
             // Build image
-            String envPath = "..\\RunEnv\\pythonTest";
+            String envPath = "";
             String imageName = "leetrun";
+            if (lan == "python")
+            {
+                envPath = "..\\RunEnv\\pythonTest";
+            }
+            else if (lan == "java")
+            {
+                envPath = "..\\RunEnv\\javaTest";
+            }
             bool isCreateImageSuccess = await Task.Run(() => createImage(client, envPath, imageName));
 
             // Run container
@@ -46,24 +63,15 @@ namespace Repository
 
             // Return result
             String resultFilePath = "..\\RunEnv\\mount\\res.json";
-            while (true)
+            using (StreamReader r = new StreamReader(resultFilePath))
             {
-                try
-                {
-                    using (StreamReader r = new StreamReader(resultFilePath))
-                    {
-                        res = r.ReadToEnd();
-                       
-                    }
-                    File.Delete(resultFilePath);
-                    return res;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Waiting...");
-                    continue;
-                }
+                res = r.ReadToEnd();
+
             }
+            File.Delete(resultFilePath);
+            return res;
+
+
         }
 
         private static Stream CreateTarballForDockerfileDirectory(string directory)
@@ -136,6 +144,7 @@ namespace Repository
 
             // Run container
             await client.Containers.StartContainerAsync(container.ID, new Docker.DotNet.Models.ContainerStartParameters(){});
+            await client.Containers.WaitContainerAsync(container.ID);
             return true;
 
         }
