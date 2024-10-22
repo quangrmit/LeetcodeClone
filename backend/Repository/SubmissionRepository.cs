@@ -22,7 +22,7 @@ namespace Repository
         public async Task<String> answerQuestion(Testcase testcase, String answer, String lan)
         {
             // Init testcases
-            String res = "hello";
+            String res = "";
             JObject json = JObject.Parse(testcase.cases);
             json.Add("problem", testcase.funcName);
             Console.WriteLine(json);
