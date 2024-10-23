@@ -140,7 +140,8 @@ namespace Repository
                 HostConfig = new HostConfig
                 {
                     // Binds = ["D:\\personalProject\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"]
-                    Binds = ["C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"]
+                    Binds = ["C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"],
+                    AutoRemove = true
                 }
             });
 

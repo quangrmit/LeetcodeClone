@@ -22,7 +22,7 @@ function compareObj(x, y) {
         if (typeof x[p] !== "object") return false;
         // Numbers, Strings, Functions, Booleans must be strictly equal
 
-        if (!object_equals(x[p], y[p])) return false;
+        if (!compareObj(x[p], y[p])) return false;
         // Objects and Arrays must be tested recursively
     }
 

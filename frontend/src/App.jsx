@@ -20,7 +20,7 @@ function App() {
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
-            <div className="poppins-regular">
+            <div className="all wrapper">
                 <Router>
                 <nav> 
                     <Link to="/">Home</Link>

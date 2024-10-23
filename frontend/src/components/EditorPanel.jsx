@@ -3,38 +3,37 @@ import { cpp } from "@codemirror/lang-cpp";
 // import 'codemirror/theme/tokyo-night.css';
 import { tokyoNight, tokyoNightInit, tokyoNightStyle } from "@uiw/codemirror-theme-tokyo-night";
 import { java } from "@codemirror/lang-java";
-
+import Button from "@mui/material/Button";
 import { useState, useCallback, useEffect, useRef, useContext } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { Select, MenuItem, FormControl, InputLabel, FormHelperText, Divider } from "@mui/material";
 import { QuestionContext } from "../pages/ProblemPage";
+import { ResLoadingContext } from "../pages/ProblemPage";
+import { ResultContext } from "../pages/ProblemPage";
+import CircularProgress from "@mui/material/CircularProgress";
+
 
 function EditorPanel({ language, width }) {
-
-
-    const {question, setQuestion} = useContext(QuestionContext);
-
+    const { question, setQuestion } = useContext(QuestionContext);
+    const { result, setResult } = useContext(ResultContext);
 
     useEffect(() => {
         // Store the new question in local storage each time it changes
 
         localStorage.setItem("question", JSON.stringify(question));
-        console.log('changing')
+        console.log("changing");
         console.log(question);
 
-
-        console.log("this is local storange after changing")
-        console.log(JSON.parse(localStorage.getItem("question")))
-
-    }, [question])
-
+        console.log("this is local storange after changing");
+        console.log(JSON.parse(localStorage.getItem("question")));
+    }, [question]);
 
     //Load data from localstorage
 
     const handleChange = (event) => {
         setQuestion((prev) => {
-            return {...prev, active: event.target.value}
-        })
+            return { ...prev, active: event.target.value };
+        });
     };
 
     const [height, setHeight] = useState(200);
@@ -51,8 +50,6 @@ function EditorPanel({ language, width }) {
         const startY = e.clientY;
         const startHeight = resizable.offsetHeight;
 
-        // Mousemove handler to resize the div
-        // console.log(resizable.style.width);
         const handleMouseMove = (moveEvent) => {
             const newHeight = startHeight + (moveEvent.clientY - startY);
             console.log(`new height ${newHeight}`);
@@ -70,31 +67,67 @@ function EditorPanel({ language, width }) {
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
     };
+    const { resLoading, setResLoading } = useContext(ResLoadingContext);
+    let handleSubmit = async () => {
+        console.log("Clicked submit");
+        setResLoading(true);
+        let ans;
+
+        if (question.active == "cpp") {
+            ans = question.cppAnswerTemplate;
+        } else if (question.active == "java") {
+            ans = question.javaAnswerTemplate;
+        } else {
+            ans = question.pythonAnswerTemplate;
+        }
+
+        let url = "http://localhost:5014/api/Submission";
+        let res = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+                questionId: question.questionId,
+                answer: ans,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        let data = await res.json();
+        setResult(data);
+        console.log(data);
+    };
+
+    useEffect(() => {
+        setResLoading(prev => !prev);
+    }, [result])
     // let age = 5;
     return (
         <div className="editor">
             {/* Create a panel for choosing the language */}
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <Select
-                    value={question.active ? question.active : ""}
-                    onChange={handleChange}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    defaultValue="python"
-                >
-                    <MenuItem value="">Python</MenuItem>
-                    <MenuItem value="java">Java</MenuItem>
-                    <MenuItem value="cpp">C++</MenuItem>
-                </Select>
-            </FormControl>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <Select
+                        value={question.active ? question.active : ""}
+                        onChange={handleChange}
+                        displayEmpty
+                        inputProps={{ "aria-label": "Without label" }}
+                        defaultValue="python"
+                    >
+                        <MenuItem value="">Python</MenuItem>
+                        <MenuItem value="java">Java</MenuItem>
+                        <MenuItem value="cpp">C++</MenuItem>
+                    </Select>
+                </FormControl>
+                <Button sx={{ marginRight: 2, color: "white" }} onClick={handleSubmit}>
+                    {!resLoading ? "Submit" : <CircularProgress size={25} color="black" />}
+                </Button>
+            </div>
             <div ref={editorResizerRef}>
-                <Editor question={question} setQuestion = {setQuestion} height={height} width={width} />
+                <Editor question={question} setQuestion={setQuestion} height={height} width={width} />
             </div>
             <div className="editor-resizer" onMouseDown={handleMouseDown}>
                 <Divider
                     orientation="horizontal"
-                    style={{ borderColor: "white" }}
-                    sx={{ borderBottomWidth: 3 }}
                 />
             </div>
 
@@ -103,16 +136,11 @@ function EditorPanel({ language, width }) {
     );
 }
 
-function Editor({ question,setQuestion, height, width }) {
-
-
+function Editor({ question, setQuestion, height, width }) {
     useEffect(() => {
         console.log(height);
         // console.log(`This is ref `)
     }, [height]);
-
-
-
 
     let editorRef = useRef(null);
     let value;
@@ -121,65 +149,59 @@ function Editor({ question,setQuestion, height, width }) {
         if (language == "") {
             lang = python();
             value = question.pythonAnswerTemplate;
-
         } else if (language == "cpp") {
             lang = cpp();
-            value = question.cppAnswerTemplate
-
+            value = question.cppAnswerTemplate;
         } else if (language == "java") {
             lang = java();
             value = question.javaAnswerTemplate;
         }
-        
     };
     // useEffect(() => {
-        detectLanguage(question.active);
+    detectLanguage(question.active);
     // }, [])
 
     // Get the initial code based on the language
-    const onChange = useCallback((val, viewUpdate) => {
-        console.log("val:")
-        console.log( val);
+    const onChange = useCallback(
+        (val, viewUpdate) => {
+            console.log("val:");
+            console.log(val);
 
+            console.log("question in onchange");
+            console.log(question);
 
-        console.log('question in onchange')
-        console.log(question)
+            if (question.active == "java") {
+                console.log("setting new for java");
+                setQuestion((prev) => {
+                    console.log("this is prev");
+                    console.log(prev);
 
-        if (question.active == "java"){
-            console.log("setting new for java")
-            setQuestion((prev) => {
-                console.log("this is prev")
-                console.log(prev);
+                    let newObj = { ...prev, javaAnswerTemplate: val };
+                    console.log("this is new obj");
+                    console.log(newObj);
+                    return newObj;
+                });
+            } else if (question.ative == "cpp") {
+                console.log("setting new for cpp");
+                setQuestion((prev) => {
+                    let newObj = { ...prev, cppAnswerTemplate: val };
+                    console.log("this is new obj");
+                    console.log(newObj);
+                    return newObj;
+                });
+            } else {
+                console.log("setting new for py");
 
-                let newObj  = {...prev, javaAnswerTemplate: val}
-                console.log('this is new obj')
-                console.log(newObj)
-                return newObj;
-            })
-        }else if (question.ative == "cpp"){
-            console.log('setting new for cpp')
-            setQuestion((prev) => {
-                let newObj  = {...prev, cppAnswerTemplate: val}
-                console.log('this is new obj')
-                console.log(newObj)
-                return newObj;
-            })
-        }else {
-            console.log('setting new for py')
-
-            setQuestion((prev) => {
-                let newObj  = {...prev, pythonAnswerTemplate: val}
-                console.log('this is new obj')
-                console.log(newObj)
-                return newObj;
-            })}
-    }, [question]);
-
-
-    const onChange2 = (e) => {
-        console.log("onchange2")
-        console.log(e.target);
-    }
+                setQuestion((prev) => {
+                    let newObj = { ...prev, pythonAnswerTemplate: val };
+                    console.log("this is new obj");
+                    console.log(newObj);
+                    return newObj;
+                });
+            }
+        },
+        [question]
+    );
 
     return (
         <div>
@@ -193,7 +215,6 @@ function Editor({ question,setQuestion, height, width }) {
                 theme={tokyoNight}
                 onChange={onChange}
                 // onChange={onChange2}
-                style={{fontFamily: "Times New Roman"}}
             />
         </div>
     );

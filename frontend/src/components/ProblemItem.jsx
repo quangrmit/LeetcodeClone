@@ -4,7 +4,7 @@ function ProblemItem({ q }) {
     return (
         <div className="problem-item">
                 <Link key={q.questionId} to={`/${q.questionId}`}>
-                    {q.questionId}. {q.questionTitle}
+                    {q.questionTitle}
                 </Link>
         </div>
     );
