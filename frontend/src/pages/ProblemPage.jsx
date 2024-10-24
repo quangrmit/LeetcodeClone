@@ -7,27 +7,44 @@ import EditorPanel from "../components/EditorPanel";
 import { Divider } from "@mui/material";
 import RightPanel from "../components/RightPanel";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import compareObj from "../utils/compareObj"
 
-function Problem() {
+export const QuestionContext = React.createContext();
+export const ResultContext = React.createContext();
+
+
+
+function Problem({ questionId }) {
     const { id } = useParams();
     console.log(id);
-    const [question, setQuestion] = useState({});
+
+
+    const [question, setQuestion] = useState(JSON.parse(localStorage.getItem("question")) || {})
+
+    const [result, setResult] = useState({
+        data: [],
+    });
     useEffect(() => {
+
+        // check if the current id is the same as the id in the localStorage
+        
+        console.log("is this reloading?");
+        console.log(JSON.parse(localStorage.getItem("question")))
         const fetchData = async () => {
             let url = `http://localhost:5014/api/Question/${id}`;
             let res = await fetch(url);
             let data = await res.json();
-            setQuestion({ ...data });
+            setQuestion({ ...data, active: "" });
             console.log(data);
         };
-        fetchData();
-    }, [id])
-
-
-    // Fetch data using useEffect()
-    //
+        if (compareObj(question, {}) || question.questionId != id) {
+            fetchData();
+        } else {
+            console.log("otherwise");
+        }
+    }, [id]);
 
     let markdown = `
 # Hello World
@@ -41,12 +58,16 @@ This is **Markdown** content.
     return (
         <div>
             <div className="problem-page-content">
-                <TopPanel />
-                <div className="down-panels">
-                    <DescriptionPanel markdown={markdown} />
-                    <RightPanel />
-                </div>
-                {/* <div className="test">hiw</div> */}
+                <QuestionContext.Provider value={{ question, setQuestion }}>
+                    <ResultContext.Provider value={{ result, setResult }}>
+                        <TopPanel />
+                        <div className="down-panels">
+                            <DescriptionPanel markdown={question.content} />
+                            <RightPanel />
+                        </div>
+                        {/* <div className="test">hiw</div> */}
+                    </ResultContext.Provider>
+                </QuestionContext.Provider>
             </div>
         </div>
     );

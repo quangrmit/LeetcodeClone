@@ -2,6 +2,7 @@
 using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241011161838_NewTemplates")]
+    partial class NewTemplates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,14 +100,14 @@ namespace BusinessObjects.Migrations
                         {
                             TestcaseId = 1,
                             QuestionId = 1,
-                            cases = "{\"data\":[{\"input\":[\"()\"],\"output\":[true]},{\"input\":[\"()[]{}\"],\"output\":[true]},{\"input\":[\"(]\"],\"output\":[false]}]}",
+                            cases = "'{\"data\":[{\"input\":[\"()\"],\"output\":[true]},{\"input\":[\"()[]{}\"],\"output\":[true]},{\"input\":[\"(]\"],\"output\":[false]}]}'",
                             funcName = "isValid"
                         },
                         new
                         {
                             TestcaseId = 2,
                             QuestionId = 2,
-                            cases = "{\"data\":[{\"input\":[[2,7,11,15],9],\"output\":[[0,1]]},{\"input\":[[3,2,4],6],\"output\":[[0,1]]},{\"input\":[[3,3],6],\"output\":[[0,1]]}]}",
+                            cases = "{\"data\":[{\"input\":[[2,7,11,15],9],\"output\":[[0,1]]},{\"input\":[[3,2,4],6],\"output\":[[0,1]]},{\"input\":[[3,3],6],\"output\":[[0,1]]}]}'",
                             funcName = "twoSum"
                         });
                 });

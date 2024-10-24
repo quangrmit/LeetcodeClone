@@ -21,6 +21,10 @@ namespace BusinessObjects
 
         [Required]
         public String pythonAnswerTemplate { get; set; }
+        [Required]
+        public String javaAnswerTemplate { get; set; }
+        [Required]
+        public String cppAnswerTemplate { get; set; }
 
         //[Required]
         //public String javaAnswerTemplate { get; set; }

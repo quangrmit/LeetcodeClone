@@ -2,6 +2,7 @@
   /* color: white; */
   /* background-color: #0d1117; */
   box-sizing: border-box;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .problem-page-content {
@@ -9,6 +10,10 @@
   flex-direction: column;
   height: 90vh;
   /* border: 3px solid orange; */
+}
+
+.problem-item > a{
+  color: white;
 }
 
 /* .problem-page-content:last-child{

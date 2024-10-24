@@ -70,8 +70,6 @@ namespace Repository
             }
             File.Delete(resultFilePath);
             return res;
-
-
         }
 
         private static Stream CreateTarballForDockerfileDirectory(string directory)
@@ -117,7 +115,7 @@ namespace Repository
             return tarball;
         }
 
-        private static async Task<bool> createImage( DockerClient client ,string imagePath, string imageName) 
+        private static async Task<bool> createImage(DockerClient client, string imagePath, string imageName)
         {
             var tarball = CreateTarballForDockerfileDirectory(imagePath);
 
@@ -138,7 +136,8 @@ namespace Repository
                 Image = imageName,
                 HostConfig = new HostConfig
                 {
-                    Binds = ["D:\\personalProject\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"]
+                    // Binds = ["D:\\personalProject\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"]
+                    Binds = ["C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"]
                 }
             });
 
