@@ -22,7 +22,7 @@ namespace ProjectWebApi.Controllers
                 String ans = answer.Answer;
                 String lan = answer.Language;
 
-                String res = await Task.Run(() => submissionRepository.answerQuestion(testcase, ans, lan));
+                String res = await Task.Run(() => submissionRepository.answerQuestion(testcase, ans, lan, 0));
                 if (res == "")
                 {
                     return BadRequest(new { message = "Can't run testcases" });
