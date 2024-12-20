@@ -125,7 +125,7 @@ namespace Repository
             foreach (JToken i in testcases)
             {
                 JObject mid = (JObject) i;
-                string input = (string) mid["input"];
+                string input = (string) mid["run_test_input"];
 
                 string dockerCommand = "docker run leetrun " + input;
 
@@ -160,7 +160,7 @@ namespace Repository
                 testres.Add("status", outp[0]);
                 testres.Add("result", outp[1]);
                 testres.Add("expected_result", (string)mid["output"]);
-                testres.Add("input", (string)mid["input"]);
+                testres.Add("input", mid["input"]);
                 result.Add(testres);
 
             }
