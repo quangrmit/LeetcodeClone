@@ -4,7 +4,6 @@ backend/.vs
 backend/BusinessObjects/appsettings.json
 backend/ProjectWebApi/appsettings.json
 backend/RunEnv/mount/res.txt
-backend/RunEnv/javaAlternate
 test
 
 # Build file
