@@ -2,6 +2,7 @@
 using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241220134011_helloworld101")]
+    partial class helloworld101
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +64,7 @@ namespace BusinessObjects.Migrations
                         new
                         {
                             QuestionId = 2,
-                            Content = "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n\nYou can return the answer in any order.\n\n#### Example 1\n> **Input**: nums = [2,7,11,15], target = 9\n> **Output**: [0,1]\n> **Explanation**: Because nums[0] + nums[1] == 9, we return [0, 1]\n#### Example 2\n> **Input**: nums = [3,3], target = 6\n> **Output**: [1,2]\n\n#### Constraints\n- <div class='code'>2 <= nums.length <= 10<sup>4</sup></div>",
+                            Content = "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\r\n\r\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\r\n\r\nYou can return the answer in any order.\r\n\r\n \r\n\r\nExample 1:\r\n\r\nInput: nums = [2,7,11,15], target = 9\r\nOutput: [0,1]\r\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].\r\nExample 2:\r\n\r\nInput: nums = [3,2,4], target = 6\r\nOutput: [1,2]\r\nExample 3:\r\n\r\nInput: nums = [3,3], target = 6\r\nOutput: [0,1]\r\n \r\n\r\nConstraints:\r\n\r\n2 <= nums.length <= 104\r\n-109 <= nums[i] <= 109\r\n-109 <= target <= 109\r\nOnly one valid answer exists.\r\n \r\n\r\nFollow-up: Can you come up with an algorithm that is less than O(n2) time complexity?",
                             QuestionTitle = "Two Sum",
                             cppAnswerTemplate = "class Solution {\r\n    public: \r\n vector<int> twoSum(vector<int>& nums, int target)  {\r\n        \r\n    }\r\n};",
                             javaAnswerTemplate = "class Solution {\r\n    public int[] twoSum(int[] nums, int target) {\r\n    }\r\n}",
@@ -104,7 +107,7 @@ namespace BusinessObjects.Migrations
                         {
                             TestcaseId = 2,
                             QuestionId = 2,
-                            cases = "{\"data\":[{\"run_test_input\": \"2 7 11 15 9 # 0 1\", \"output\": \"[0,1]\", \"input\": [[2, 7, 11, 15],9],}, {\"run_test_input\": \"3 2 4 6 # 0 1\", \"output\": \"[0,1]\", \"input\":[[3,2,4],6]}, {\"run_test_input\": \"3 3 6 # 0 1\", \"output\": \"[0,1]\", \"input\":[[3,3],6]}]}",
+                            cases = "{\"data\":[{\"run_test_input\": \"2 7 11 15 9 # 0 1\", \"output\": \"[0,1]\", \"input\": [[2, 7, 11, 15],9],}, {\"run_test_input\": \"3 2 4 6 # 0 1\", \"output\": \"[0,1]\", \"input\":[[3,2,4],6]}, {\"run_test_input\": \"3 3 6 # 0 1d\", \"output\": \"[0,1]\", \"input\":[[3,3],6]}]}",
                             funcName = "twoSum"
                         });
                 });
