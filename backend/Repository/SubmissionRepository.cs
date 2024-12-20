@@ -35,10 +35,15 @@ namespace Repository
                 String solutionFilePath = "..\\RunEnv\\pythonTest\\solution.py";
                 File.WriteAllText(solutionFilePath, answer);
             }
-            else if(lan == "java")
+            else if (lan == "java")
             {
                 String solutionFilePath = "..\\RunEnv\\javaTest\\src\\main\\java\\com\\example\\app\\Solution.java";
                 answer = "package com.example.app;\r\n" + answer;
+                File.WriteAllText(solutionFilePath, answer);
+            }
+            else if (lan == "cpp")
+            {
+                String solutionFilePath = "..\\RunEnv\\cppTest\\Solution.cpp";
                 File.WriteAllText(solutionFilePath, answer);
             }
 
@@ -56,18 +61,33 @@ namespace Repository
             {
                 envPath = "..\\RunEnv\\javaTest";
             }
+            else if (lan == "cpp")
+            {
+                Console.WriteLine("cppenv");
+                envPath = "..\\RunEnv\\cppTest";
+            }
             bool isCreateImageSuccess = await Task.Run(() => createImage(client, envPath, imageName));
+            Console.WriteLine("image ran " + isCreateImageSuccess);
+
 
             // Run container
             bool isContainerRunSuccess = await Task.Run(() => runContainer(client, imageName));
 
+            Console.WriteLine("Container ran " + isContainerRunSuccess);
+
             // Return result
             String resultFilePath = "..\\RunEnv\\mount\\res.json";
+            // try
+            // {
+
             using (StreamReader r = new StreamReader(resultFilePath))
             {
                 res = r.ReadToEnd();
 
             }
+            // }catch(Exception e){
+            //     // Console.WriteLine(e.)
+            // }
             File.Delete(resultFilePath);
             return res;
         }
@@ -138,12 +158,12 @@ namespace Repository
                 {
                     // Binds = ["D:\\personalProject\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"]
                     Binds = ["C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"],
-                    AutoRemove = true
+                    // AutoRemove = true
                 }
             });
 
             // Run container
-            await client.Containers.StartContainerAsync(container.ID, new Docker.DotNet.Models.ContainerStartParameters(){});
+            await client.Containers.StartContainerAsync(container.ID, new Docker.DotNet.Models.ContainerStartParameters() { });
             await client.Containers.WaitContainerAsync(container.ID);
             return true;
 

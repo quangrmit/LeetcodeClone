@@ -24,10 +24,12 @@
     public App() {}
  
     public static void main(String[] args) throws NoSuchMethodException, SecurityException, JSONException, IOException, IllegalAccessException, InvocationTargetException {
-
+        System.out.println("begin of program");
+        String currentDirectory = System.getProperty("user.dir");
+        System.out.println(currentDirectory);
         // Load data
         FileReader fileReader = new FileReader(
-                ".//mount//data.json");
+                "..//mount//data.json");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         StringBuilder jsonContent = new StringBuilder();
         String line;
