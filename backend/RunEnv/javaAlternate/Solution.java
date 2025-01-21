@@ -1,10 +1,10 @@
-import java.util.HashM;
+import java.util.HashMap;
 class Solution {
     public int[] twoSum(int[] nums, int target) {
         HashMap<Integer, Integer> archive = new HashMap<Integer, Integer>();
         int[] answer = new int[2];
         for (int i=0; i< nums.length; i++) {
-      nlewub;          if (archive.get(nums[i]) == null) {
+                if (archive.get(nums[i]) == null) {
                     archive.put(target - nums[i],i);
                 }
                 else {

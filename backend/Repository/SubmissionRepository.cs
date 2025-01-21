@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Diagnostics;
 using System.Text.Json.Nodes;
+using k8s;
+using k8s.Models;
 
 
 namespace Repository
@@ -22,58 +24,6 @@ namespace Repository
     {
         public SubmissionRepository() { }
 
-        //public async Task<String> answerQuestion(Testcase testcase, String answer, String lan)
-        //{
-        //    // Init testcases
-        //    String res = "";
-        //    JObject json = JObject.Parse(testcase.cases);
-        //    json.Add("problem", testcase.funcName);
-        //    Console.WriteLine(json);
-        //    String dataFilePath = "..\\RunEnv\\mount\\data.json";
-        //    File.WriteAllText(dataFilePath, json.ToString());
-
-        //    // Init solution
-        //    if (lan == "python")
-        //    {
-        //        String solutionFilePath = "..\\RunEnv\\pythonTest\\solution.py";
-        //        File.WriteAllText(solutionFilePath, answer);
-        //    }
-        //    else if(lan == "java")
-        //    {
-        //        String solutionFilePath = "..\\RunEnv\\javaTest\\src\\main\\java\\com\\example\\app\\Solution.java";
-        //        answer = "package com.example.app;\r\n" + answer;
-        //        File.WriteAllText(solutionFilePath, answer);
-        //    }
-
-        //    // Setup Docker client
-        //    DockerClient client = new DockerClientConfiguration().CreateClient();
-
-        //    // Build image
-        //    String envPath = "";
-        //    String imageName = "leetrun";
-        //    if (lan == "python")
-        //    {
-        //        envPath = "..\\RunEnv\\pythonTest";
-        //    }
-        //    else if (lan == "java")
-        //    {
-        //        envPath = "..\\RunEnv\\javaTest";
-        //    }
-        //    bool isCreateImageSuccess = await Task.Run(() => createImage(client, envPath, imageName));
-
-        //    // Run container
-        //    bool isContainerRunSuccess = await Task.Run(() => runContainer(client, imageName));
-
-        //    // Return result
-        //    String resultFilePath = "..\\RunEnv\\mount\\res.json";
-        //    using (StreamReader r = new StreamReader(resultFilePath))
-        //    {
-        //        res = r.ReadToEnd();
-
-        //    }
-        //    File.Delete(resultFilePath);
-        //    return res;
-        //}
         public async Task<String> answerQuestion(Testcase testcase, String answer, String lan, int placeholder)
         {
             // Init testcases 
@@ -106,12 +56,13 @@ namespace Repository
             //}
             //"import java.util.HashMap;\r\npublic class Solution {\r\n    public int[] twoSum(int[] nums, int target) {\r\n        HashMap<Integer, Integer> archive = new HashMap<Integer, Integer>();\r\n        int[] answer = new int[2];\r\n        for (int i=0; i< nums.length; i++) {\r\n                if (archive.get(nums[i]) == null) {\r\n                    archive.put(target - nums[i],i);\r\n                }\r\n                else {\r\n                    answer[0] = archive.get(nums[i]);\r\n                    answer[1] = i;\r\n                }\r\n        }\r\n        return answer;\r\n    }\r\n}"
             //"#include <iostream>\r\n#include <map>\r\n#include<vector>\r\nusing namespace std;\r\n\r\nclass Solution{\r\npublic:\r\n    vector<int> twoSum (vector<int> nums, int target){\r\n        \r\n        map<int, int> archive = {};\r\n        vector<int> answer = {};\r\n        for (int i = 0; i < nums.size(); i ++){\r\n            if (archive.find(nums[i]) == archive.end()){\r\n                archive[target - nums[i]] = i;\r\n            }else {\r\n                answer.push_back(archive.at(nums[i]));\r\n                answer.push_back(i);\r\n\r\n            }\r\n        }\r\n        return answer;\r\n\r\n    }\r\n\r\n};\r\n"
+            
             if (lan == "java")
             {
                 envPath = "..\\RunEnv\\javaAlternate";
             }
 
-            // Build docker image as an executable
+            // Build docker image
             var watchnew = System.Diagnostics.Stopwatch.StartNew();
 
             bool isCreateImageSuccess = await Task.Run(() => createImage(client, envPath, imageName));
@@ -168,33 +119,6 @@ namespace Repository
             elapsedMss = watchnew.ElapsedMilliseconds;
             Console.WriteLine(elapsedMss);
 
-
-            //foreach (var test in testcases)
-            //{
-            //    JObject mid = (JObject)test;
-            //    Console.WriteLine((string) mid["cla"]);
-
-            //    //Run container
-            //    var watch = System.Diagnostics.Stopwatch.StartNew();
-
-            //    bool isContainerRunSuccess = await Task.Run(() => runContainer(client, imageName, (string)mid["cla"]));
-
-            //    watch.Stop();
-            //    var elapsedMs = watch.ElapsedMilliseconds;
-            //    Console.WriteLine(elapsedMs);
-
-            //}
-
-            // Return result
-            //String resultFilePath = "..\\RunEnv\\mount\\res.json";
-            //using (StreamReader r = new StreamReader(resultFilePath))
-            //{
-            //    res = r.ReadToEnd();
-
-            //}
-            //File.Delete(resultFilePath);
-
-            //return getReturnOutput(output);
             return result.ToString();
         }
         private static Stream CreateTarballForDockerfileDirectory(string directory)
@@ -285,6 +209,24 @@ namespace Repository
 
         private String evaluateTest(String test) {
             return "";
+        }
+
+        private void setUpKube()
+        {
+            var config = KubernetesClientConfiguration.BuildDefaultConfig();
+
+            var client = new Kubernetes(config);
+
+            var ns = new V1Namespace
+            {
+                Metadata = new V1ObjectMeta
+                {
+                    Name = "test"
+                }
+            };
+
+            var result = client.CoreV1.CreateNamespace(ns);
+            Console.WriteLine(result);
         }
     }
 }

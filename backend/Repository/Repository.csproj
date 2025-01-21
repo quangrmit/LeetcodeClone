@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Docker.DotNet" Version="3.125.15" />
+    <PackageReference Include="KubernetesClient" Version="15.0.1" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
   </ItemGroup>
 	<ItemGroup>
