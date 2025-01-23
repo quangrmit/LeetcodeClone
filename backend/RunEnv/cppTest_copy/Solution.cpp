@@ -15,6 +15,7 @@ public:
             }else {
                 answer.push_back(archive.at(nums[i]));
                 answer.push_back(i);
+
             }
         }
         return answer;

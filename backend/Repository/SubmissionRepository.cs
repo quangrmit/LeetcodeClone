@@ -92,6 +92,11 @@ namespace Repository
                 String solutionFilePath = "..\\RunEnv\\javaAlternate\\Solution.java";
                 File.WriteAllText(solutionFilePath, answer);
             }
+            else if (lan == "cpp")
+            {
+                String solutionFilePath = "..\\RunEnv\\cppTest_copy\\Solution.cpp";
+                File.WriteAllText(solutionFilePath, answer);
+            }
 
             // Setup Docker client
             DockerClient client = new DockerClientConfiguration().CreateClient();
@@ -110,6 +115,10 @@ namespace Repository
             {
                 envPath = "..\\RunEnv\\javaAlternate";
             }
+            else if (lan == "cpp")
+            {
+                envPath = "..\\RunEnv\\cppTest_copy";
+            }
 
             // Build docker image as an executable
             var watchnew = System.Diagnostics.Stopwatch.StartNew();
@@ -124,8 +133,8 @@ namespace Repository
             JArray result = new JArray();
             foreach (JToken i in testcases)
             {
-                JObject mid = (JObject) i;
-                string input = (string) mid["run_test_input"];
+                JObject mid = (JObject)i;
+                string input = (string)mid["run_test_input"];
 
                 string dockerCommand = "docker run leetrun " + input;
 
@@ -260,8 +269,8 @@ namespace Repository
                 Image = imageName,
                 HostConfig = new HostConfig
                 {
-                     Binds = ["D:\\personalProject\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"]
-                     //Binds = ["C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"]
+                    Binds = ["D:\\personalProject\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"]
+                    //Binds = ["C:\\Users\\Lenovo\\OneDrive\\Desktop\\LeetcodeClone\\backend\\RunEnv\\mount:/usr/src/app/mount"]
                 },
                 Env = new List<String>
                 {
@@ -270,7 +279,7 @@ namespace Repository
             });
 
             // Run container
-            await client.Containers.StartContainerAsync(container.ID, new Docker.DotNet.Models.ContainerStartParameters(){});
+            await client.Containers.StartContainerAsync(container.ID, new Docker.DotNet.Models.ContainerStartParameters() { });
             await client.Containers.WaitContainerAsync(container.ID);
             client.Containers.KillContainerAsync(container.ID, new ContainerKillParameters() { });
             return true;
@@ -283,7 +292,8 @@ namespace Repository
             return res;
         }
 
-        private String evaluateTest(String test) {
+        private String evaluateTest(String test)
+        {
             return "";
         }
     }

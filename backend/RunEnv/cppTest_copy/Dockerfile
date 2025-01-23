@@ -14,7 +14,8 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
     && rm -f /tmp/reinstall-cmake.sh
 
 # [Optional] Uncomment this section to install additional vcpkg ports.
-RUN su vscode -c "${VCPKG_ROOT}/vcpkg install nlohmann-json"
+
+# RUN su vscode -c "${VCPKG_ROOT}/vcpkg install nlohmann-json"
 
 # [Optional] Uncomment this section to install additional packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
@@ -25,3 +26,4 @@ COPY ./res.json .
 RUN cmake -DCMAKE_TOOLCHAIN_FILE=/usr/local/vcpkg/scripts/buildsystems/vcpkg.cmake .
 RUN make 
 CMD [ "./my_program" ]
+ENTRYPOINT ["./my_program"]

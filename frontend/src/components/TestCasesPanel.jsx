@@ -21,13 +21,13 @@ function TestCasesPanel() {
 
     return (
         <div className="test-panel">
-            {result.data.length > 0 ? (
+            {result.length > 0 ? (
 
                 // resLoading ? 
                 // <CircularProgress/>
                 // : 
 
-                result.data.map((item, i) => (
+                result.map((item, i) => (
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
@@ -40,7 +40,7 @@ function TestCasesPanel() {
                                     label={`Case ${i + 1}`}
                                     key={i}
                                     icon={
-                                        compareObj(item.output, item.result) ? (
+                                        item.status == 'true' ? (
                                             <CheckCircleOutlineIcon color={"success"} />
                                         ) : (
                                             <ErrorOutlineIcon color="error" />
@@ -54,7 +54,7 @@ function TestCasesPanel() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Divider/>
-                            <DiffRenderer output={item.output} result={item.result} />
+                            <DiffRenderer output={item.result} result={item.expected_result} />
                         </AccordionDetails>
                     </Accordion>
                 ))

@@ -60,7 +60,7 @@ function EditorPanel({ language, width }) {
         // Remove event listeners after mouse is released
         const handleMouseUp = () => {
             document.removeEventListener("mousemove", handleMouseMove);
-            document.removeEvKentListener("mouseup", handleMouseUp);
+            document.removeEventListener("mouseup", handleMouseUp);
         };
 
         // Attach the event listeners for resizing
@@ -85,8 +85,9 @@ function EditorPanel({ language, width }) {
         let res = await fetch(url, {
             method: "POST",
             body: JSON.stringify({
-                questionId: question.questionId,
-                answer: ans,
+                QuestionId: question.questionId,
+                Answer: ans,
+                Language: question.active
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -173,20 +174,16 @@ function Editor({ question, setQuestion, height, width }) {
             if (question.active == "java") {
                 console.log("setting new for java");
                 setQuestion((prev) => {
-                    console.log("this is prev");
-                    console.log(prev);
+         
 
                     let newObj = { ...prev, javaAnswerTemplate: val };
-                    console.log("this is new obj");
-                    console.log(newObj);
+      
                     return newObj;
                 });
             } else if (question.ative == "cpp") {
                 console.log("setting new for cpp");
                 setQuestion((prev) => {
                     let newObj = { ...prev, cppAnswerTemplate: val };
-                    console.log("this is new obj");
-                    console.log(newObj);
                     return newObj;
                 });
             } else {
@@ -194,8 +191,7 @@ function Editor({ question, setQuestion, height, width }) {
 
                 setQuestion((prev) => {
                     let newObj = { ...prev, pythonAnswerTemplate: val };
-                    console.log("this is new obj");
-                    console.log(newObj);
+   
                     return newObj;
                 });
             }
