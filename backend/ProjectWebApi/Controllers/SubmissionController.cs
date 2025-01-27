@@ -21,8 +21,12 @@ namespace ProjectWebApi.Controllers
                 Testcase testcase = question.Testcases.FirstOrDefault();
                 String ans = answer.Answer;
                 String lan = answer.Language;
-
-                String res = await Task.Run(() => submissionRepository.answerQuestion(testcase, ans, lan, 0));
+                String wrapper = "";
+                if (lan == "java")
+                {
+                    wrapper = question.javaWrapper;
+                }
+                String res = await Task.Run(() => submissionRepository.answerQuestion(testcase, ans, lan, 0, wrapper));
                 if (res == "")
                 {
                     return BadRequest(new { message = "Can't run testcases" });

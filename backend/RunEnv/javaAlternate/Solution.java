@@ -12,6 +12,6 @@ class Solution {
                     answer[1] = i;
                 }
         }
-        return answer;
+   int j = answer[3];     return answer;
     }
 }

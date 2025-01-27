@@ -15,7 +15,6 @@ namespace Repository
         public QuestionRepository() { }
 
         public List<ListQuestionResponseDTO> listAllQuestions() {
-            setUpKube();
            return QuestionDAO.getAllQuestions();
         }
 
@@ -26,25 +25,6 @@ namespace Repository
             return QuestionDAO.getQuestionById(id);
         }
 
-        private void setUpKube()
-        {
-            var config = KubernetesClientConfiguration.BuildDefaultConfig();
-
-            var client = new Kubernetes(config);
-
-            var ns = new V1Namespace
-            {
-                Metadata = new V1ObjectMeta
-                {
-                    Name = "test"
-                }
-            };
-
-            var result = client.CoreV1.CreateNamespace(ns);
-            
-            Console.WriteLine(result);
-
-        }
 
     }
 }
