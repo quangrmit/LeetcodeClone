@@ -26,6 +26,10 @@ namespace ProjectWebApi.Controllers
                 {
                     wrapper = question.javaWrapper;
                 }
+                if (lan == "python")
+                {
+                    wrapper = question.pythonWrapper;
+                }
                 String res = await Task.Run(() => submissionRepository.answerQuestion(testcase, ans, lan, 0, wrapper));
                 if (res == "")
                 {

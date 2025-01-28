@@ -29,6 +29,7 @@ namespace Repository
 
         public async Task<String> answerQuestion(Testcase testcase, String answer, String lan, int placeholder, string wrapper)
         {
+            
             // Init testcases 
             JObject json = JObject.Parse(testcase.cases);
             JArray testcases = (JArray)json["data"];
@@ -44,6 +45,15 @@ namespace Repository
                 String wrapperFilePath = "..\\RunEnv\\javaAlternate\\App.java";
                 File.WriteAllText(wrapperFilePath, wrapper);
             }
+            if (lan == "python")
+            {
+                // Write user solution to file
+                String solutionFilePath = "..\\RunEnv\\pythonAlternate\\solution.py";
+                File.WriteAllText(solutionFilePath, answer);
+                // Write language wrapper for input and output processing
+                String wrapperFilePath = "..\\RunEnv\\pythonAlternate\\main.py";
+                File.WriteAllText(wrapperFilePath, wrapper);
+            }
 
             // Setup Docker client
             DockerClient client = new DockerClientConfiguration().CreateClient();
@@ -52,14 +62,13 @@ namespace Repository
             String envPath = "";
             String imageName = "kreden35/leetrun";
 
-            //if (lan == "python")
-            //{
-            //    envPath = "..\\RunEnv\\pythonTest";
-            //}
-            
             if (lan == "java")
             {
                 envPath = "..\\RunEnv\\javaAlternate";
+            }
+            if (lan == "python")
+            {
+                envPath = "..\\RunEnv\\pythonAlternate";
             }
             // Build docker image
             var watchnew = System.Diagnostics.Stopwatch.StartNew();
@@ -76,7 +85,7 @@ namespace Repository
             // Run test evaluation
             watchnew = System.Diagnostics.Stopwatch.StartNew();
 
-            String output = runTest(testcases);
+            String output = runTest(testcases, lan);
             JArray result = formatOutput(testcases, output);
 
             elapsedMss = watchnew.ElapsedMilliseconds;
@@ -171,7 +180,7 @@ namespace Repository
 
         }
 
-        private String runTest(JArray testcases)
+        private String runTest(JArray testcases, string lan)
         {
             String result = "";
 
@@ -227,7 +236,74 @@ namespace Repository
             Console.WriteLine("Load configmap");
 
             // Build job file
+            var buildJobFile = "D:\\personalProject\\test\\kubelearn\\job.yaml";
             int numTestcases = testcases.Count;
+            string[] command = null;
+            if (lan == "java")
+            {
+                command = new[] { "java", "App" };
+            }
+            if (lan == "python")
+            {
+                command = new[] { "python", "./main.py"};
+            }
+            var yamlJobBody = new
+            {
+                apiVersion = "batch/v1",
+                kind = "Job",
+                metadata = new
+                {
+                    name = "indexed-job-example",
+                    @namespace = "default"
+                },
+                spec = new
+                {
+                    completions = numTestcases,
+                    parallelism = 10,
+                    completionMode = "Indexed",
+                    template = new
+                    {
+                        spec = new
+                        {
+                            restartPolicy = "Never",
+                            containers = new[]
+                {
+                            new
+                            {
+                                name = "indexed-job-container",
+                                image = "kreden35/leetrun",
+                                imagePullPolicy = "Always",
+                                command = command,
+                                volumeMounts = new[]
+                                {
+                                    new
+                                    {
+                                        name = "config-volume",
+                                        mountPath = "/etc/config",
+                                        readOnly = true
+                                    }
+                                }
+                            }
+                        },
+                            volumes = new[]
+                {
+                            new
+                            {
+                                name = "config-volume",
+                                configMap = new
+                                {
+                                    name = "job-input-config"
+                                }
+                            }
+                        }
+                        }
+                    }
+                }
+            };
+
+            string yamlJobContent = serializer.Serialize(yamlJobBody);
+            File.WriteAllText (buildJobFile, yamlJobContent);
+            Console.WriteLine($"Job file written successfully to {buildJobFile}");
 
             // Start job
             String jobFile = "D:\\personalProject\\test\\kubelearn\\job.yaml";
@@ -250,34 +326,6 @@ namespace Repository
             Console.WriteLine("Start job");
 
             // Wait for job (must wait for 2 condition fail and success)
-            //Boolean fail = false;
-            //Boolean success = false;
-
-            //String waitJobCommand = "kubectl wait --for=condition=complete --timeout=120s job/indexed-job-example";
-            //startInfo = new ProcessStartInfo
-            //{
-            //    FileName = "cmd.exe",
-            //    Arguments = $"/C {waitJobCommand}",
-            //    RedirectStandardError = true,
-            //    RedirectStandardOutput = true,
-            //    UseShellExecute = false,
-            //    CreateNoWindow = true,
-            //};
-
-            //process = Process.Start(startInfo);
-
-            //process.WaitForExit();
-
-            //string output = process.StandardOutput.ReadToEnd();
-            //string error = process.StandardError.ReadToEnd();
-
-            //Console.WriteLine("Wait job");
-
-            //Console.WriteLine(output);
-            //Console.WriteLine(error);
-
-            //// If job fail, select 1 fail pod and throw the result
-
             string jobName = "indexed-job-example"; // Replace with your job name
             int timeoutInSeconds = 120; // Adjust timeout as needed
             DateTime startTime = DateTime.Now;
@@ -305,10 +353,6 @@ namespace Repository
 
                     if (isSucceeded || isFailed)
                     {
-                        //if (isFailed)
-                        //{
-                        //    HandleFailure(jobName);
-                        //}
                         break;
                     }
                 }
@@ -483,7 +527,7 @@ namespace Repository
                 return null;
             }
         }
-
+        //string a = ""
         private void HandleFailure(string jobName)
         {
             string failedPodsCommand = $"kubectl get pods --selector=job-name={jobName} --field-selector=status.phase=Failed -o jsonpath='{{.items[*].metadata.name}}'";

@@ -22,6 +22,8 @@ namespace BusinessObjects
         [Required] 
         public string javaWrapper { get; set; }
         [Required]
+        public string pythonWrapper { get; set; }
+        [Required]
         public String pythonAnswerTemplate { get; set; }
         [Required]
         public String javaAnswerTemplate { get; set; }
