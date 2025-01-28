@@ -1,20 +1,34 @@
+using SignalRChat.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowAll", builder =>
+//     {
+//         builder
+//             .AllowAnyHeader()
+//             .AllowAnyOrigin()
+//             // .AllowCredentials()
+//             .AllowAnyMethod();
+//     });
+
+// });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddDefaultPolicy( builder =>
     {
-        builder
+        builder.WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
-            .AllowAnyOrigin()
-            
+            // .AllowAnyOrigin()
+            .AllowCredentials()
             .AllowAnyMethod();
     });
 
@@ -31,10 +45,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAll");
+// app.UseCors("AllowAll");
+app.UseCors();
 
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

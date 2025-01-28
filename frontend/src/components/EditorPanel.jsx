@@ -10,8 +10,8 @@ import { Select, MenuItem, FormControl, InputLabel, FormHelperText, Divider } fr
 import { QuestionContext } from "../pages/ProblemPage";
 import { ResLoadingContext } from "../pages/ProblemPage";
 import { ResultContext } from "../pages/ProblemPage";
+import { CollabConnectionContext } from "../pages/ProblemPage";
 import CircularProgress from "@mui/material/CircularProgress";
-
 
 function EditorPanel({ language, width }) {
     const { question, setQuestion } = useContext(QuestionContext);
@@ -87,7 +87,7 @@ function EditorPanel({ language, width }) {
             body: JSON.stringify({
                 QuestionId: question.questionId,
                 Answer: ans,
-                Language: question.active
+                Language: question.active,
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -99,8 +99,8 @@ function EditorPanel({ language, width }) {
     };
 
     useEffect(() => {
-        setResLoading(prev => !prev);
-    }, [result])
+        setResLoading((prev) => !prev);
+    }, [result]);
     // let age = 5;
     return (
         <div className="editor">
@@ -127,9 +127,7 @@ function EditorPanel({ language, width }) {
                 <Editor question={question} setQuestion={setQuestion} height={height} width={width} />
             </div>
             <div className="editor-resizer" onMouseDown={handleMouseDown}>
-                <Divider
-                    orientation="horizontal"
-                />
+                <Divider orientation="horizontal" />
             </div>
 
             {/* EditorPanel */}
@@ -138,6 +136,10 @@ function EditorPanel({ language, width }) {
 }
 
 function Editor({ question, setQuestion, height, width }) {
+
+    const connection = useContext(CollabConnectionContext);
+
+
     useEffect(() => {
         console.log(height);
         // console.log(`This is ref `)
@@ -163,38 +165,17 @@ function Editor({ question, setQuestion, height, width }) {
     // }, [])
 
     // Get the initial code based on the language
+
+
+    const syncContent  = async (code, activeLang) => {
+        console.log("calling sync")
+        await connection.invoke("SyncContent", code, activeLang)
+    }
+
+
     const onChange = useCallback(
         (val, viewUpdate) => {
-            console.log("val:");
-            console.log(val);
-
-            console.log("question in onchange");
-            console.log(question);
-
-            if (question.active == "java") {
-                console.log("setting new for java");
-                setQuestion((prev) => {
-         
-
-                    let newObj = { ...prev, javaAnswerTemplate: val };
-      
-                    return newObj;
-                });
-            } else if (question.ative == "cpp") {
-                console.log("setting new for cpp");
-                setQuestion((prev) => {
-                    let newObj = { ...prev, cppAnswerTemplate: val };
-                    return newObj;
-                });
-            } else {
-                console.log("setting new for py");
-
-                setQuestion((prev) => {
-                    let newObj = { ...prev, pythonAnswerTemplate: val };
-   
-                    return newObj;
-                });
-            }
+            syncContent(val, question.active)
         },
         [question]
     );
