@@ -26,9 +26,17 @@ namespace ProjectWebApi.Controllers
                 {
                     wrapper = question.javaWrapper;
                 }
-                if (lan == "python")
+                else if (lan == "python")
                 {
                     wrapper = question.pythonWrapper;
+                }
+                else if (lan == "cpp")
+                {
+                    wrapper = question.cppWrapper;
+                }
+                else
+                {
+                    return BadRequest(new { message = "Language not supported" });
                 }
                 String res = await Task.Run(() => submissionRepository.answerQuestion(testcase, ans, lan, 0, wrapper));
                 if (res == "")

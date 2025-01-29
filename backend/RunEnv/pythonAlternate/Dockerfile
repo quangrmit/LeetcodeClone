@@ -6,4 +6,4 @@ COPY main.py ./
 
 COPY solution.py ./
 
-# CMD [ "python", "./main.py" ]
+RUN python ./main.py

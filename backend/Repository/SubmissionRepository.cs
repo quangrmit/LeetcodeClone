@@ -54,6 +54,15 @@ namespace Repository
                 String wrapperFilePath = "..\\RunEnv\\pythonAlternate\\main.py";
                 File.WriteAllText(wrapperFilePath, wrapper);
             }
+            if (lan == "cpp")
+            {
+                // Write user solution to file
+                String solutionFilePath = "..\\RunEnv\\cppAlternate\\solution.h";
+                File.WriteAllText(solutionFilePath, answer);
+                // Write language wrapper for input and output processing
+                String wrapperFilePath = "..\\RunEnv\\cppAlternate\\main.cpp";
+                File.WriteAllText(wrapperFilePath, wrapper);
+            }
 
             // Setup Docker client
             DockerClient client = new DockerClientConfiguration().CreateClient();
@@ -70,6 +79,10 @@ namespace Repository
             {
                 envPath = "..\\RunEnv\\pythonAlternate";
             }
+            if (lan == "cpp")
+            {
+                envPath = "..\\RunEnv\\cppAlternate";
+            }
             // Build docker image
             var watchnew = System.Diagnostics.Stopwatch.StartNew();
 
@@ -84,7 +97,7 @@ namespace Repository
 
             // Run test evaluation
             watchnew = System.Diagnostics.Stopwatch.StartNew();
-
+            
             String output = runTest(testcases, lan);
             JArray result = formatOutput(testcases, output);
 
@@ -168,7 +181,6 @@ namespace Repository
             string output = process.StandardOutput.ReadToEnd();
             string error = process.StandardError.ReadToEnd();
 
-            Console.WriteLine("Wait job");
 
             Console.WriteLine(output);
             Console.WriteLine("Error is" + error);
@@ -246,6 +258,10 @@ namespace Repository
             if (lan == "python")
             {
                 command = new[] { "python", "./main.py"};
+            }
+            if (lan == "cpp")
+            {
+                command = new[] { "./app" }; 
             }
             var yamlJobBody = new
             {
