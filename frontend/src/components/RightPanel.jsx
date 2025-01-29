@@ -36,7 +36,9 @@ function RightPanel() {
     return (
         <div className="right-panels" ref={resizableRef}>
             <div className="resizer" onMouseDown={handleMouseDown}>
-                <Divider orientation="vertical" style={{ borderColor: "white" }} sx={{borderRightWidth:3}}/>
+                <Divider orientation="vertical"
+                //  style={{ borderColor: "white" }} sx={{borderRightWidth:1}}
+                 />
             </div>
             <div className="right-main">
                 <EditorPanel width={reWidth}/>

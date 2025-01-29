@@ -63,6 +63,11 @@ namespace Repository
                 String wrapperFilePath = "..\\RunEnv\\cppAlternate\\main.cpp";
                 File.WriteAllText(wrapperFilePath, wrapper);
             }
+            else if (lan == "cpp")
+            {
+                String solutionFilePath = "..\\RunEnv\\cppTest_copy\\Solution.cpp";
+                File.WriteAllText(solutionFilePath, answer);
+            }
 
             // Setup Docker client
             DockerClient client = new DockerClientConfiguration().CreateClient();
@@ -109,7 +114,7 @@ namespace Repository
         private static Stream CreateTarballForDockerfileDirectory(string directory)
         {
             var tarball = new MemoryStream();
-            var files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(directory, ".", SearchOption.AllDirectories);
 
             using var archive = new TarOutputStream(tarball)
             {
@@ -216,6 +221,7 @@ namespace Repository
                 {
                     name = "job-input-config",
                     @namespace = "default"
+
                 },
                 data = data
             };

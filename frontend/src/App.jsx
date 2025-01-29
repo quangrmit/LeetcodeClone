@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/HomePage";
 import ProblemPage from "./pages/ProblemPage";
+
 
 
 
@@ -17,10 +17,11 @@ function App() {
             mode: "dark",
         },
     });
+
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
-            <div className="poppins-regular">
+            <div className="all wrapper">
                 <Router>
                 <nav> 
                     <Link to="/">Home</Link>
