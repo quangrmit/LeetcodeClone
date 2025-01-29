@@ -6,4 +6,4 @@ COPY . .
 
 RUN javac *.java
 
-ENTRYPOINT [ "java", "App" ]
+# ENTRYPOINT [ "java", "App" ]

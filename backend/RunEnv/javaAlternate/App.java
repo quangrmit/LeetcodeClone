@@ -1,14 +1,26 @@
 import java.util.*;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.*;
+
 
 public class App {
     public static void main(String[] args) {
-        if (args.length == 0) {
-            System.err.println("No input provided!");
-            return;
+        // Print environment variable
+        String envVariable2 = System.getenv("JOB_COMPLETION_INDEX");
+        System.out.println("JOB_INDEX: " + (envVariable2 != null ? envVariable2 : "Not Set"));
+
+        // Print file content
+        String content = "";
+        try {
+            content = new String(Files.readAllBytes(Paths.get("/etc/config/input-" + envVariable2)));
+        } catch (Exception e) {
+            System.out.println("Error reading file: " + e.getMessage());
         }
 
         // Combine arguments into a single string
+        args = content.split("\s+");
         StringBuilder inputBuilder = new StringBuilder();
         for (String arg : args) {
             inputBuilder.append(arg).append(" ");
@@ -53,8 +65,9 @@ public class App {
                 System.out.println(Arrays.toString(result));
             }
 
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("error");
+            e.printStackTrace(System.out);
         }
     }
 }
