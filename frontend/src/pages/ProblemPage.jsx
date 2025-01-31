@@ -49,16 +49,35 @@ function Problem({ questionId }) {
     const joinRoom = async (user='default', room='default') => {
         const newConnection = new HubConnectionBuilder().withUrl("http://localhost:5014/chatHub").build();
 
-        await newConnection.start();
         newConnection.on("ReceiveContent", (content, activeLang) => {
             console.log("received content");
             changeCodeByActiveLang(content, activeLang);
         });
 
+        // This does not work. Why?
+        newConnection.onclose(() => {
+            // reset everything
+            console.log('onclose')
+            setConnection();
+            setUsername("")
+            setRoomId("")
+            setJoinedRoom(false);
+            // question: Should we keep track of the state code before joining the room, so we can restore that when the user leaves the room -> I think not
+        })
+        await newConnection.start();
+
         await newConnection.invoke("JoinRoom", { user, room });
 
         setConnection(newConnection);
     };
+    const leaveRoom = async () => {
+        console.log('leaving room')
+        await connection.stop();
+        setConnection();
+        setUsername("")
+        setRoomId("")
+        setJoinedRoom(false);
+    }
 
  
     useEffect(() => {
@@ -90,7 +109,7 @@ function Problem({ questionId }) {
                 <QuestionContext.Provider value={{ question, setQuestion }}>
                     <ResultContext.Provider value={{ result, setResult }}>
                         <ResLoadingContext.Provider value={{ resLoading, setResLoading }}>
-                            <CollabConnectionContext.Provider value={{connection, setConnection, joinRoom, username, setUsername, roomId, setRoomId, joinedRoom, setJoinedRoom}}>
+                            <CollabConnectionContext.Provider value={{connection, setConnection, joinRoom, username, setUsername, roomId, setRoomId, joinedRoom, setJoinedRoom, leaveRoom}}>
                                 <TopPanel />
                                 <Divider
                                     orientation="horizontal"

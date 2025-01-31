@@ -22,10 +22,8 @@ export default function CreateRoomModal() {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const {joinedRoom} = useContext(CollabConnectionContext) 
-    const leaveRoom = () => {
-        console.log('leaving room')
-    }
+    const {joinedRoom, leaveRoom} = useContext(CollabConnectionContext) 
+
 
     return (
         <div>
