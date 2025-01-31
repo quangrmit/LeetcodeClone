@@ -45,7 +45,6 @@ function EditorPanel({ language, width }) {
     const editorResizerRef = useRef(null);
 
     const handleMouseDown = (e) => {
-        console.log("here");
         const resizable = editorResizerRef.current;
         const startY = e.clientY;
         const startHeight = resizable.offsetHeight;
@@ -67,6 +66,10 @@ function EditorPanel({ language, width }) {
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
     };
+
+
+
+
     const { resLoading, setResLoading } = useContext(ResLoadingContext);
     let handleSubmit = async () => {
         console.log("Clicked submit");
@@ -101,7 +104,7 @@ function EditorPanel({ language, width }) {
     useEffect(() => {
         setResLoading((prev) => !prev);
     }, [result]);
-    // let age = 5;
+
     return (
         <div className="editor">
             {/* Create a panel for choosing the language */}
@@ -129,21 +132,17 @@ function EditorPanel({ language, width }) {
             <div className="editor-resizer" onMouseDown={handleMouseDown}>
                 <Divider orientation="horizontal" />
             </div>
-
-            {/* EditorPanel */}
         </div>
     );
 }
 
+
+
+
 function Editor({ question, setQuestion, height, width }) {
 
-    const connection = useContext(CollabConnectionContext);
+    const {connection} = useContext(CollabConnectionContext);
 
-
-    useEffect(() => {
-        console.log(height);
-        // console.log(`This is ref `)
-    }, [height]);
 
     let editorRef = useRef(null);
     let value;
@@ -165,19 +164,19 @@ function Editor({ question, setQuestion, height, width }) {
     // }, [])
 
     // Get the initial code based on the language
-
-
+    
     const syncContent  = async (code, activeLang) => {
         console.log("calling sync")
         await connection.invoke("SyncContent", code, activeLang)
     }
 
 
+
     const onChange = useCallback(
         (val, viewUpdate) => {
             syncContent(val, question.active)
         },
-        [question]
+        [question, connection]
     );
 
     return (
@@ -191,7 +190,6 @@ function Editor({ question, setQuestion, height, width }) {
                 extensions={[lang]}
                 theme={tokyoNight}
                 onChange={onChange}
-                // onChange={onChange2}
             />
         </div>
     );

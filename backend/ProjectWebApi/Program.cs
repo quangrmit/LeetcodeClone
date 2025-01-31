@@ -1,4 +1,5 @@
-using SignalRChat.Hubs;
+using ProjectWebApi.Hubs;
+using ChatService;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -27,12 +28,14 @@ builder.Services.AddCors(options =>
     {
         builder.WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
-            // .AllowAnyOrigin()
             .AllowCredentials()
             .AllowAnyMethod();
     });
 
 });
+builder.Services.AddSingleton<IDictionary<string, UserConnection>>(opts => new Dictionary<string, UserConnection>());
+
+
 
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
 

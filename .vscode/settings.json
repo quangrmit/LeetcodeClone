@@ -56,5 +56,6 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "C:/Users/Lenovo/OneDrive/Desktop/LeetcodeClone/backend/RunEnv/cppTest_copy"
 }

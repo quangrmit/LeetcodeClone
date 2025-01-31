@@ -24,6 +24,9 @@ function Problem({ questionId }) {
     });
 
     const [connection, setConnection] = useState(null);
+    const [username, setUsername] = useState("")
+    const [roomId, setRoomId] = useState("")
+    const [joinedRoom, setJoinedRoom] = useState(false);
 
     const changeCodeByActiveLang = (code, activeLang) => {
         if (activeLang == "java") {
@@ -42,9 +45,8 @@ function Problem({ questionId }) {
                 return newObj;
             });
         }
-    }
-
-    const joinRoom = async () => {
+    };
+    const joinRoom = async (user='default', room='default') => {
         const newConnection = new HubConnectionBuilder().withUrl("http://localhost:5014/chatHub").build();
 
         await newConnection.start();
@@ -53,13 +55,12 @@ function Problem({ questionId }) {
             changeCodeByActiveLang(content, activeLang);
         });
 
-        let user = "default_user";
-        let room = "default_room";
         await newConnection.invoke("JoinRoom", { user, room });
 
         setConnection(newConnection);
     };
 
+ 
     useEffect(() => {
         // check if the current id is the same as the id in the localStorage
 
@@ -77,20 +78,11 @@ function Problem({ questionId }) {
         if (compareObj(question, {}) || question.questionId != id) {
             fetchData();
         } else {
-
             console.log("otherwise");
         }
-        joinRoom();
+
+    
     }, [id]);
-
-    let markdown = `
-# Hello World
-
-This is **Markdown** content.
-
-- Item 1
-- Item 2
-`;
 
     return (
         <div>
@@ -98,7 +90,7 @@ This is **Markdown** content.
                 <QuestionContext.Provider value={{ question, setQuestion }}>
                     <ResultContext.Provider value={{ result, setResult }}>
                         <ResLoadingContext.Provider value={{ resLoading, setResLoading }}>
-                            <CollabConnectionContext.Provider value={connection}>
+                            <CollabConnectionContext.Provider value={{connection, setConnection, joinRoom, username, setUsername, roomId, setRoomId, joinedRoom, setJoinedRoom}}>
                                 <TopPanel />
                                 <Divider
                                     orientation="horizontal"

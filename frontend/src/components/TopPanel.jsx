@@ -4,30 +4,29 @@ import { ResultContext } from "../pages/ProblemPage";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ResLoadingContext } from "../pages/ProblemPage";
+import CreateRoomModal from "./CreateRoomModal";
+import { CollabConnectionContext } from "../pages/ProblemPage";
 
 function TopPanel() {
-    const { question } = useContext(QuestionContext);
 
-    const { result, setResult } = useContext(ResultContext);
-
-    const {resLoading, setResLoading} = useContext(ResLoadingContext)
-
-    const [loading, setLoading] = useState(false);
+    const {username, roomId, joinedRoom, setJoinedRoom} = useContext(CollabConnectionContext)
 
 
+    // I have some state which is "" at the start but will show value when a form is submitted
+
+    // the problem is I show the value of the form 
+
+    
 
     return (
-        <div>
-            {/* <Button variant="contained" onClick={handleSubmit}>
-                {
-                    !resLoading ? 
-                    "Submit"
-                    :
-                    <CircularProgress size={25} color="black"/>
-                }
+        <div className="top-panel">
+            <CreateRoomModal/>
+            {/* <Button onClick={joinIndiRoom}>Join Room</Button> */}
 
-            </Button> */}
-            {/* <button onClick={handleSubmit}>Submit</button> */}
+
+            {joinedRoom ? username : ""}
+            <br />
+            {joinedRoom ? roomId : ""}
         </div>
     );
 }
