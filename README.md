@@ -3,13 +3,10 @@
 # LeetcodeClone
 LeetcodeClone is an attempt at cloning the functionality of the Leetcode coding platform with the main purpose is to learn something new
 
-## Demo
-
 ## Tech Stack
 [![My Skills](https://skillicons.dev/icons?i=react,js,cs,dotnet,kubernetes,docker)](https://skillicons.dev)
 
 ## Architecture
-
 
 ## Functionality
 * Support for C++, Java, and Python
